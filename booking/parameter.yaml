@@ -1,0 +1,146 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "Amplify Configuration"
+        Parameters:
+          - Env
+      - Label:
+          default: "Contentful Configuration"
+        Parameters:
+          - ContentfulSpaceId
+          - ContentfulToken
+      - Label:
+          default: "Google Calender Configuration"
+        Parameters:
+          - GoogleCalenderCredentials
+          - GoogleCalenderToken
+      - Label:
+          default: "Sentry Configuration"
+        Parameters:
+          - SentryDSN
+      - Label:
+          default: "Salon Configuration"
+        Parameters:
+          - SalonName
+          - MailFooter
+          - SystemMailAddress
+
+Parameters:
+  Env:
+    Description: Amplify environment
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - prod
+      - test
+
+  ContentfulSpaceId:
+    Description: Contentful Space Id
+    Type: String
+    Default: dummy
+
+  ContentfulToken:
+    Description: Contentful Delivery API Token
+    Type: String
+    Default: dummy
+
+  GoogleCalenderCredentials:
+    Description: Google Calender Credentials
+    Type: String
+    Default: dummy
+
+  GoogleCalenderToken:
+    Description: Google Calender Token
+    Type: String
+    Default: dummy
+
+  SentryDSN:
+    Description: Sentry DSN
+    Type: String
+    Default: dummy
+
+  SalonName:
+    Description: Salon Name
+    Type: String
+    Default: Sample Salon
+
+  MailFooter:
+    Description: Mail Footer
+    Type: String
+    Default: |
+      -------------------------------------------------
+      sample mail footer
+      -------------------------------------------------
+
+  SystemMailAddress:
+    Description: salon owner's email address
+    Type: String
+    Default: test@example.com
+
+Resources:
+  ContentfulSpaceIdParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/${Env}/contentful/spaceId"
+      Type: "String"
+      Value: !Ref ContentfulSpaceId
+      Description: "Contentful Space ID"
+
+  ContentfulTokenParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/${Env}/contentful/token"
+      Type: "String"
+      Value: !Ref ContentfulToken
+      Description: "Contentful Content Delivery API - access token"
+
+  GoogleCalenderCredentialsParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/${Env}/googleapis/calendar/credentials"
+      Type: "String"
+      Value: !Ref GoogleCalenderCredentials
+      Description: "Google Calender Credentials"
+
+  GoogleCalenderTokenParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/${Env}/googleapis/calendar/token"
+      Type: "String"
+      Value: !Ref GoogleCalenderToken
+      Description: "Google Calender API token"
+
+  SentryDSNParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/${Env}/sentry/dsn"
+      Type: "String"
+      Value: !Ref SentryDSN
+      Description: "Sentry DSN"
+
+  SalonNameParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/${Env}/salon/name"
+      Type: "String"
+      Value: !Ref SalonName
+      Description: "salon name"
+
+  MailFooterParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/${Env}/salon/mail/footer"
+      Type: "String"
+      Value: !Ref MailFooter
+      Description: "mail footer"
+
+  SystemMailAddressParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: !Sub "/${Env}/system/email"
+      Type: "String"
+      Value: !Ref SystemMailAddress
+      Description: "salon owner's email address"
